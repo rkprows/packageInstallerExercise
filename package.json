@@ -4,16 +4,15 @@
   "description": "Determine package installation order",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rkprows/packageInstallerExercise.git"
+    "test": "mocha",
+    "lite": "lite-server",
+    "start": "concurrent \"npm run lite\" "
   },
   "author": "Rachel Prows",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rkprows/packageInstallerExercise/issues"
-  },
-  "homepage": "https://github.com/rkprows/packageInstallerExercise#readme"
+  "dependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^3.5.0",
+    "request": "^2.81.0"
+  }
 }
