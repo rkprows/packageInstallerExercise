@@ -1,16 +1,27 @@
-// Throws error if no input
-// Accepts Array of Strings
-// Strings should have package : dependency
-// Returns string of packages in correct order
-// test for proper input (no numbers or non-strings)
-// If no dependencies, return package as single string
-// Throw error if array contains cycles
-var expect = require("chai").expect;
 var installer = require("./index.js");
 
 describe("Package Installer", function() {
-  describe("fails when", function() {
-    it("input is null", function() {
-    });
+  it("requires an input", function() {
+
   });
+  
+  it("only accepts array of strings", function() {
+
+  });
+
+  it("throws error when dependencies cycle", function() {
+
+  });
+  it("returns single string when single given single package", function() {
+
+  });
+
+  it("returns a comma separated string", function() {
+
+  });
+
+  it("returns packages in correct order", function() {
+
+  });
+
 });
