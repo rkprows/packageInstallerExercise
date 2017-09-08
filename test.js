@@ -1,4 +1,5 @@
 var expect    = require("chai").expect;
+var assert = require("assert");
 var installer = require("./index.js");
 
 describe("Package Installer", function() {
@@ -11,9 +12,10 @@ describe("Package Installer", function() {
     expect(installer.packageInstaller(input)).to.equal("Error - Input must be an array");
   });
 
-  it("accepts an array", function() {
-    var input = ["one: ", "two: one"];
-    expect(installer.packageInstaller(input)).to.be.an('array');
+
+  it("fails when input is not array of strings", function() {
+    var input = [1, 2, 3];
+    expect(installer.packageInstaller(input)).to.throw(TypeError, `Error - Input must be an array of strings. Instead got ${typeof package}`).that.is.a('string');
   });
 
   it("throws error when dependencies cycle", function() {
