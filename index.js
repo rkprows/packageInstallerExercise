@@ -24,16 +24,15 @@ exports.packageInstaller = function(packagesArray) {
     var output = [];
     packagesArray.forEach(function(pkg) {
       var pkgs = pkg.split(":");
-      // output.push(pkgs)
       var pack = pkgs[0];
       var dep = pkgs[1];
       var result = [pack, dep]
 
-      if(!output[pack]) {
+      if(!output.includes(pack)) {
         output[pack] = [];
       } 
 
-      if(!output[dep] && dep.length > 0) {
+      if(!output.includes(dep) && dep.length > 0) {
         output[dep] = [];
       }
 
@@ -45,20 +44,22 @@ exports.packageInstaller = function(packagesArray) {
   }
 
   var sortPackages = function(splitPkgs) {
-    var Toposort = require('toposort-class');
-    var t = new Toposort();
-    splitPkgs.forEach(function(pkg) {
-      t.add(pkg);
-    });
-    return (t.sort());
+    var topsort = require('topsort');
+    var pkgs = splitPkgs;
+    var sorted = topsort(pkgs);
+    // HANDLE IF SORTED RETURNS ERROR
+    // if (sorted === Error) {
+      // throw new Error('Error - Cycle in dependencies')
+    // } else {
+      // return sorted;
+    // }
+    return sorted;  
   };
 
   return {
-    packages: packagesArray,
     install: function() {
-      var splitPkgs = splitPackages();
+      var splitPkgs = splitPackages(packagesArray);
       return sortPackages(splitPkgs).join(",");
     }
   }
 };
-
