@@ -15,12 +15,12 @@ describe("Package Installer", function() {
 
   it("fails when input is not array of strings", function() {
     var input = [1, 2, 3];
-    expect(installer.packageInstaller(input)).to.equal(Error, `Error - Input must be an array of strings. Instead got ${typeof package}`).that.is.a('string');
+    expect(installer.packageInstaller(input)).to.throw( TypeError, `Error - Input must be an array of strings. Instead got ${typeof package}`).that.is.a('string');
   });
 
   it("throws error when dependencies cycle", function() {
     var input =  ["KittenService: ", "Leetmeme: Cyberportal", "Cyberportal: Ice", "CamelCaser: KittenService", "Fraudstream: "];
-    expect(installer.packageInstaller(input)).to.equal('Error - Cycle in dependencies');    
+    expect(installer.packageInstaller(input).install()).to.equal('Error - Cycle in dependencies');    
   });
 
   it("returns single string when single given single package", function() {
@@ -30,7 +30,7 @@ describe("Package Installer", function() {
 
   it("returns packages in correct order", function() {
     var input =  ["KittenService: ", "Leetmeme: Cyberportal", "Cyberportal: Ice", "CamelCaser: KittenService", "Fraudstream: Leetmeme", "Ice: "]
-    expect(installer.packageInstaller(input)).to.equal("KittenService, Ice, Cyberportal, Leetmeme, CamelCaser, Fraudstream");
+    expect(installer.packageInstaller(input).install()).to.equal("KittenService, Ice, Cyberportal, Leetmeme, CamelCaser, Fraudstream");
   });
 
 });
