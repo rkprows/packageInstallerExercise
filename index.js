@@ -1,5 +1,11 @@
 exports.packageInstaller = function(packagesArray) {
   if (!packagesArray) {
-    throw "Error - Packages Installer requires an input"
-  }
+    return ("Error - Packages Installer requires an input");
+  };
+
+  if (!Array.isArray(packagesArray)) {
+    return ("Error - Input must be an array");
+  } else {
+    return packagesArray;
+  };
 }
