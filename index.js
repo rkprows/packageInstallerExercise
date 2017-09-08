@@ -57,7 +57,7 @@ exports.packageInstaller = function(packagesArray) {
   };
 
   return {
-    install: function() {
+    installPkgs: function() {
       var splitPkgs = splitPackages(packagesArray);
       return sortPackages(splitPkgs).join(",");
     }

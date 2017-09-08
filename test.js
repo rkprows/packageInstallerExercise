@@ -20,7 +20,7 @@ describe("Package Installer", function() {
 
   it("throws error when dependencies cycle", function() {
     var input =  ["KittenService: ", "Leetmeme: Cyberportal", "Cyberportal: Ice", "CamelCaser: KittenService", "Fraudstream: "];
-    expect(installer.packageInstaller(input).install()).to.equal('Error - Cycle in dependencies');    
+    expect(installer.packageInstaller(input).installPkgs()).to.equal('Error - Cycle in dependencies');    
   });
 
   it("returns single string when single given single package", function() {
@@ -30,7 +30,7 @@ describe("Package Installer", function() {
 
   it("returns packages in correct order", function() {
     var input =  ["KittenService: ", "Leetmeme: Cyberportal", "Cyberportal: Ice", "CamelCaser: KittenService", "Fraudstream: Leetmeme", "Ice: "]
-    expect(installer.packageInstaller(input).install()).to.equal("KittenService, Ice, Cyberportal, Leetmeme, CamelCaser, Fraudstream");
+    expect(installer.packageInstaller(input).installPkgs()).to.equal("KittenService, Ice, Cyberportal, Leetmeme, CamelCaser, Fraudstream");
   });
 
 });
