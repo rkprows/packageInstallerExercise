@@ -10,7 +10,7 @@ exports.packageInstaller = function(packagesArray) {
   
   packagesArray.forEach(function(package) {
     if (typeof package !== 'string') {
-      throw new TypeError (`Error - Input must be an array of strings. Instead got ${typeof package}`);
+      return (`Error - Input must be an array of strings. Instead got ${typeof package}`);
     };
   });
 
@@ -18,48 +18,62 @@ exports.packageInstaller = function(packagesArray) {
     var package = packagesArray[0].split(":");
     return (package[0]);
   }
+
   var packagesArray = packagesArray;
 
   var splitPackages = function() {
-    var output = [];
-    packagesArray.forEach(function(pkg) {
-      var pkgs = pkg.split(":");
-      var pack = pkgs[0];
-      var dep = pkgs[1];
-      var result = [pack, dep]
+     var output = {};
+    packagesArray.forEach(function(package) {
+      var packages = package.split(':');
+      var pkg = packages[0].trim();
+      var dep = packages[1].trim();
 
-      if(!output.includes(pack)) {
-        output[pack] = [];
-      } 
-
-      if(!output.includes(dep) && dep.length > 0) {
+      if (!output[pkg]) {
+        output[pkg] = [];
+      };
+      if (!output[dep] && dep.length > 0) {
         output[dep] = [];
-      }
-
-      if(dep.length > 0) {
-        output[pack].push(dep);
-      }
+      }; 
+      if (dep.length > 0){
+        output[pkg].push(dep);
+      };
     });
-    return (output);
+    return output;
   }
 
   var sortPackages = function(splitPkgs) {
-    var topsort = require('topsort');
-    var pkgs = splitPkgs;
-    var sorted = topsort(pkgs);
-    // HANDLE IF SORTED RETURNS ERROR
-    // if (sorted === Error) {
-      // throw new Error('Error - Cycle in dependencies')
-    // } else {
-      // return sorted;
-    // }
-    return sorted;  
+    var output = [];
+    var ordered = {};
+
+    Object.keys(splitPkgs).forEach(function(pkg) {
+      sort(pkg, []);
+    });
+
+    function sort(pkg, parents) {
+      if (ordered[pkg]) {
+        return;
+      }
+      [parents].push(pkg);
+      var p = splitPkgs[pkg];
+      p.forEach(function(dep) {
+        if (parents.indexOf(dep) >= 0) {
+          return 'Error - Cycle in dependencies';
+        } else {
+          sort(dep, parents);
+        }
+      });
+      ordered[pkg] = true;
+      output.push(pkg);
+    }
+
+    return output;   
   };
 
   return {
+    packagesArray: packagesArray,
     installPkgs: function() {
       var splitPkgs = splitPackages(packagesArray);
-      return sortPackages(splitPkgs).join(",");
+      return sortPackages(splitPkgs).join(", ");
     }
-  }
+  };
 };
